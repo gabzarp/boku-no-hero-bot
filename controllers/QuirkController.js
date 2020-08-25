@@ -1,24 +1,22 @@
 const Quirk = require('../models/quirk')
 const User  = require('../models/user')
 const quirkController = {
-    createQuirk: async (message, args, message_value)=>{
+    createQuirk: async (params)=>{
         try {
-            message_values = message_value.split('%')
-           console.log(message_values)
+            var message_values = params.message_value.split('%')
             var quirk = {
                 name: message_values[0],
                 description: message_values[1],
-                type: message_values[2],
-                defence: message_values[3],
-                attack: message_values[4],
-                crit_chance: message_values[5],
-                control_chance: message_values[6],
-                agility: message_values[7],
-                precision: message_values[8],
-                primary_function: message_values[9]
+                defence: message_values[2],
+                attack: message_values[3],
+                power: message_values[4],
+                defence_power: message_values[5],
+                agility: message_values[6],
+                precision: message_values[7],
+                utility: message_values[8]
             }
             var quirk = await Quirk.create(quirk);
-            message.channel.send("Nova quirk: " + quirk)
+            params.message.channel.send("Nova quirk: " + quirk)
         } catch (error) {
             console.log(error)
         }

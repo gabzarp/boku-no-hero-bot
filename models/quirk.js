@@ -5,16 +5,10 @@ const Quirk = new mongoose.Schema({
         type: String,
         required: true,
         unique: true,
-        dropDups: true
     },
     description: {
         type: String,
         required: true
-    },
-    type: {
-        type: String,
-        required: true,
-        enum: ["Emissão", "Transformação", "Mutação"]
     },
     defence: {
         type: Number,
@@ -28,42 +22,39 @@ const Quirk = new mongoose.Schema({
         min: 0,
         max: 100
     },
-    oneforall: {
-        type: Boolean,
-        default: false,
-    },
-    allforone: {
-        type: Boolean,
-        default: false,
-    },
-    image: {
-        type: String
-    },
-    crit_chance: {
+    power: {
         type: Number,
-        required: true
-    },
-    control_chance: {
-        type: Number,
-        required: true
-    },
-    primary_function: {
-        type: String,
         required: true,
-        enum: ['ofensiva', 'defensiva', 'mobilidade', 'utilidade']
+        min: 0,
+        max: 100
     },
-    secondary_function: {
-        type: String,        
-        enum: ['ofensiva', 'defensiva', 'mobilidade', 'utilidade']
+    defence_power: {
+        type: Number,
+        required: true,
+        min: 0,
+        max: 100
     },
     agility: {
         type: Number,
-        required: true,        
+        required: true,  
+        min: 0,
+        max: 100      
     },
     precision: {
         type: Number,
         required: true,
-    }
+        min: 0,
+        max: 100
+    },
+    utility: {
+        type: Number,
+        required: true,
+        min: 0,
+        max: 100
+    },
+    image: {
+        type: String
+    },
 });
 
 const quirkModel = mongoose.model("Quirk", Quirk);
