@@ -20,7 +20,7 @@ const router = {
         var error;
         var user; 
         if (typeof routes[args[0]] === 'undefined') {
-            error = "This command doesn't exist, type %help to more informations."
+            error = "This command doesn't exist, shounen! Type %help for more informations."
         }
         if(args[0] != 'awake'){
             user = await User.findOne({userId: message.author.id})
