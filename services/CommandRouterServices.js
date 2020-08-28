@@ -1,8 +1,9 @@
-const { createQuirk } = require('../controllers/QuirkController.js')
+const { createQuirk, myQuirk } = require('../controllers/QuirkController.js')
 const User = require('../models/user.js')
 const { quirkAwake, chooseAlignment, changeName } = require('../controllers/UserController.js')
 const { train } = require('../controllers/TrainingController.js')
 const { duel } = require('../controllers/FightController.js')
+const { help } = require('../controllers/UtilController')
 
 const routes = {
     'awake': quirkAwake,
@@ -10,7 +11,9 @@ const routes = {
     'choose': chooseAlignment,
     'name': changeName,
     'train': train,
-    'duel': duel
+    'duel': duel,
+    'quirk': myQuirk,
+    'help': help
 } 
 
 const router = {

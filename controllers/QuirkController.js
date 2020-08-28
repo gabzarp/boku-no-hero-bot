@@ -26,6 +26,11 @@ const quirkController = {
         var random = Math.floor(Math.random() * count)
         var randomQuirk = await Quirk.findOne().skip(random);
         return randomQuirk;
+    },
+    myQuirk: async (params) => {
+        var user = await User.find({ userId: params.message.mentions.users.first() ? params.message.mentions.users.first().id : params.message.author.id }).populate('quirk')
+        
+        params.message.channel.send(`${params.message.mentions.users.first() ? params.message.mentions.users.first().username : params.message.author.username}'s quirk: ${user[0].quirk}`)
     }
 }
 module.exports = quirkController
