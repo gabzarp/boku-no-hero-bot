@@ -1,6 +1,8 @@
 const {Client, RichEmbed} = require("discord.js");
 require('dotenv').config()
+var schedule = require('node-schedule');
 const { router } = require("./services/CommandRouterServices");
+const { restAllUsers } = require("./controllers/UserController");
 
 const client = new Client();
 global.config = {
@@ -9,7 +11,10 @@ global.config = {
 }
 
 client.on("ready", () => {
-  client.user.setActivity(`%`);
+  client.user.setActivity(`%help`);
+  schedule.scheduleJob("24 * * * *", async ()=>{
+    restAllUsers()
+  });  
 });
 
 client.on("guildCreate", guild => {

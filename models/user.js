@@ -41,5 +41,15 @@ const User = new mongoose.Schema({
         min: 0,
         max: 100
     },
+    stamina: {
+        type: Number,
+        min: 0,
+        max: 5,
+        default: 5
+    },
+    trained: {
+        type: Number,
+        default: 1
+    }
 });
 module.exports = mongoose.model("User", User);

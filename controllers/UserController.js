@@ -2,7 +2,7 @@ const User = require('../models/user')
 const Quirk = require('../models/quirk')
 const {randomQuirk} = require('../controllers/QuirkController')
 
-const alignments = ['hero', 'vilain']
+const alignments = ['hero', 'villain']
 
 const userController = {
     quirkAwake: async (params)=>{
@@ -15,7 +15,10 @@ const userController = {
                     userId: params.message.author.id
                 })
             }
+
             user.quirk = await randomQuirk();
+
+
 
             user.defence = user.quirk.defence,
             user.attack = user.quirk.attack,
@@ -62,6 +65,9 @@ const userController = {
         } catch (error) {
             console.log(error.code)
         }
+    },
+    restAllUsers: async()=>{
+        await User.updateMany({stamina: { $lt: 5} }, {$inc : {stamina : 1}})
     }
 }
 module.exports = userController

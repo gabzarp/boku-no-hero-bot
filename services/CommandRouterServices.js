@@ -1,12 +1,16 @@
 const { createQuirk } = require('../controllers/QuirkController.js')
 const User = require('../models/user.js')
 const { quirkAwake, chooseAlignment, changeName } = require('../controllers/UserController.js')
+const { train } = require('../controllers/TrainingController.js')
+const { duel } = require('../controllers/FightController.js')
 
 const routes = {
     'awake': quirkAwake,
     'addquirk': createQuirk,
     'choose': chooseAlignment,
-    'name': changeName
+    'name': changeName,
+    'train': train,
+    'duel': duel
 } 
 
 const router = {
@@ -24,7 +28,7 @@ const router = {
         }
         if(args[0] != 'awake'){
             user = await User.findOne({userId: message.author.id})
-            if (typeof user === 'undefined') {
+            if (!user) {
                 error = "Type $awake to awaken your power"
             }
         }
