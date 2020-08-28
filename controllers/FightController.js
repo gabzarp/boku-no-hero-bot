@@ -28,6 +28,13 @@ module.exports = {
                         return points
                     }, Promise.resolve(0))
                     var winner =  points > 4 ? params.user.name : enemy.name
+                    
+                    enemy.name.stamina += -1
+                    params.user.name.stamina += -1
+
+                    enemy.save()
+                    params.user.save()
+
                     message.channel.send(`${winner} won`);
                 }
                 else{ 
