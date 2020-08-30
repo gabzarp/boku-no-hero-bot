@@ -107,6 +107,17 @@ const userController = {
             heroesEmbed
         )
        params.message.channel.send(embed);
+    },
+    stamina: async(params)=>{
+        var zapzapzapzapzapzap = '';
+        for (let index = 0; index < params.user.stamina; index++) {
+            zapzapzapzapzapzap += '⚡'
+        }
+        if (zapzapzapzapzapzap == '') {
+            params.message.channel.send(`You have no stamina. Wait the resting time, every hour, to ragain a stamina point.`)
+            return;
+        }
+        params.message.channel.send(`Your stamina: ${zapzapzapzapzapzap}`)
     }
 }
 module.exports = userController
