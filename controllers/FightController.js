@@ -14,7 +14,7 @@ module.exports = {
             return;
         }
         if (params.user.stamina <= 0) {
-            params.message.channel.send(`You don't have enought stamina.`);
+            params.message.channel.send(`You don't have enough stamina.`);
             return;
         }
         var enemy = await User.findOne({userId : params.args[1].replace("<@!", "").replace(">", "")})
@@ -24,7 +24,7 @@ module.exports = {
             return;
         }
         if (enemy.stamina <= 0) {
-            params.message.channel.send(`${enemy.name} don't have enought stamina.`);
+            params.message.channel.send(`${enemy.name} don't have enough stamina.`);
             return;
         }
         var message = await params.message.channel.send(`<@!${params.user.userId}> is challenging ${params.args[1]}`)
