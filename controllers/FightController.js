@@ -29,12 +29,12 @@ module.exports = {
         }
         var message = await params.message.channel.send(`<@!${params.user.userId}> is challenging ${params.args[1]}`)
 
-        await message.react('👍')
-        await message.react('👎')
+        await message.react('⚔️')
+        await message.react('🚫')
 
-        await message.awaitReactions((reaction, user) => user.id == enemy.userId && (reaction.emoji.name == '👍' || reaction.emoji.name == '👎'),
+        await message.awaitReactions((reaction, user) => user.id == enemy.userId && (reaction.emoji.name == '⚔️' || reaction.emoji.name == '🚫'),
         { max: 1, time: 30000 }).then(async collected => {
-                if (collected.first().emoji.name == '👍') {
+                if (collected.first().emoji.name == '⚔️') {
                     var points = await Object.keys(statusRolls).reduce(async (points, status)=>{
                         points = await points + (Math.random() * (params.user[status] - enemy[statusRolls[status]]))
                         points = await points + (Math.random() * (enemy[statusRolls[status]] - params.user[status]))
@@ -48,7 +48,7 @@ module.exports = {
                     enemy.save()
                     params.user.save()
 
-                    message.channel.send(`${winner} won`);
+                    message.channel.send(`**${winner}** won`);
                 }
                 else{ 
                     message.channel.send(`${params.args[1]} declined the duel.`);
