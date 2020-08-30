@@ -32,7 +32,7 @@ const router = {
         }
         if(args[0] != 'awake'){
             user = await User.findOne({userId: message.author.id})
-            if (!user) {
+            if (!user ) {
                 error = "Type $awake to awaken your power"
             }
         }

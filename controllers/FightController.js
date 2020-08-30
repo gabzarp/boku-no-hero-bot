@@ -1,36 +1,49 @@
 const User = require("../models/user")
 const { Message } = require("discord.js")
 
-const status = [
-    'defence',
-    'attack',
-    'power',
-    'defence_power', 
-    'agility', 
-    'precision', 
-    'utility'
-]
+const statusRolls = {
+    'attack': 'defence',
+    'power': 'defence_power',
+    'agility': 'precision'
+}
 
 module.exports = {
     duel: async (params)=>{
-        var message = await params.message.channel.send(`<@!${params.user.userId}> is challenging ${params.args[1]}`)
+        if (typeof params.args[1] === 'undefined') {
+            params.message.channel.send(`You didn't challange anyone. Correct sintax: %duel '@username'.`);
+            return;
+        }
+        if (params.user.stamina <= 0) {
+            params.message.channel.send(`You don't have enought stamina.`);
+            return;
+        }
         var enemy = await User.findOne({userId : params.args[1].replace("<@!", "").replace(">", "")})
+
+        if (!enemy) {
+            params.message.channel.send(`Challenger doesn't have a quirk.`);
+            return;
+        }
+        if (enemy.stamina <= 0) {
+            params.message.channel.send(`${enemy.name} don't have enought stamina.`);
+            return;
+        }
+        var message = await params.message.channel.send(`<@!${params.user.userId}> is challenging ${params.args[1]}`)
+
         await message.react('👍')
         await message.react('👎')
 
         await message.awaitReactions((reaction, user) => user.id == enemy.userId && (reaction.emoji.name == '👍' || reaction.emoji.name == '👎'),
         { max: 1, time: 30000 }).then(async collected => {
                 if (collected.first().emoji.name == '👍') {
-                    var points = await status.reduce(async (points, status)=>{
-                        if(params.user[status] >= enemy[status]){
-                            points  = await points + 1
-                        }
+                    var points = await Object.keys(statusRolls).reduce(async (points, status)=>{
+                        points = await points + (Math.random() * (params.user[status] - enemy[statusRolls[status]]))
+                        points = await points + (Math.random() * (enemy[statusRolls[status]] - params.user[status]))
                         return points
                     }, Promise.resolve(0))
-                    var winner =  points > 4 ? params.user.name : enemy.name
+                    var winner =  points > 0 ? params.user.name : enemy.name
                     
-                    enemy.name.stamina += -1
-                    params.user.name.stamina += -1
+                    enemy.stamina += -1
+                    params.user.stamina += -1
 
                     enemy.save()
                     params.user.save()
