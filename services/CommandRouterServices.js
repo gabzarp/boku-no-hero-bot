@@ -1,6 +1,6 @@
 const { createQuirk, myQuirk } = require('../controllers/QuirkController.js')
 const User = require('../models/user.js')
-const { quirkAwake, chooseAlignment, changeName, stamina } = require('../controllers/UserController.js')
+const { quirkAwake, chooseAlignment, changeName, stamina, heroes, villains } = require('../controllers/UserController.js')
 const { train } = require('../controllers/TrainingController.js')
 const { duel } = require('../controllers/FightController.js')
 const { help } = require('../controllers/UtilController')
@@ -15,6 +15,8 @@ const routes = {
     'quirk': myQuirk,
     'help': help,
     'stamina': stamina,
+    'heroes': heroes,
+    'villains': villains
 } 
 
 const router = {
@@ -31,7 +33,7 @@ const router = {
             error = "This command doesn't exist, shounen! Type %help for more informations."
         }
         if(args[0] != 'awake'){
-            user = await User.findOne({userId: message.author.id})
+            user = await User.findOne({userId: message.author.id, serverId: message.guild.id})
             if (!user ) {
                 error = "Type $awake to awaken your power"
             }
