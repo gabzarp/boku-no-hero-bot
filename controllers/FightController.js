@@ -9,17 +9,26 @@ const statusRolls = {
 
 module.exports = {
     duel: async (params)=>{
-        var message = await params.message.channel.send(`<@!${params.user.userId}> is challenging ${params.args[1]}`)
         if (typeof params.args[1] === 'undefined') {
-            message.channel.send(`You didn't challange anyone. Correct sintax: %duel '@username'.`);
+            params.message.channel.send(`You didn't challange anyone. Correct sintax: %duel '@username'.`);
             return;
         }
-        
+        if (params.user.stamina <= 0) {
+            params.message.channel.send(`You don't have enought stamina.`);
+            return;
+        }
         var enemy = await User.findOne({userId : params.args[1].replace("<@!", "").replace(">", "")})
+
         if (!enemy) {
-            message.channel.send(`Challenger doesn't have a quirk.`);
+            params.message.channel.send(`Challenger doesn't have a quirk.`);
             return;
         }
+        if (enemy.stamina <= 0) {
+            params.message.channel.send(`${enemy.name} don't have enought stamina.`);
+            return;
+        }
+        var message = await params.message.channel.send(`<@!${params.user.userId}> is challenging ${params.args[1]}`)
+
         await message.react('👍')
         await message.react('👎')
 
@@ -33,8 +42,8 @@ module.exports = {
                     }, Promise.resolve(0))
                     var winner =  points > 0 ? params.user.name : enemy.name
                     
-                    enemy.name.stamina += -1
-                    params.user.name.stamina += -1
+                    enemy.stamina += -1
+                    params.user.stamina += -1
 
                     enemy.save()
                     params.user.save()
