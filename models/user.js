@@ -1,11 +1,12 @@
 const mongoose = require("../database/mongodb");
 
 const User = new mongoose.Schema({
-    name: { type: String, unique: true },
+    name: { type: String },
     lastQuirk: { type: Date, default: Date.now },
     quirk: { type: mongoose.Schema.Types.ObjectId, ref: "Quirk" },
     alignment: { type: String, enum: ["hero", "villain"] },
     userId: { type: String, required: true },
+    serverId: { type: String, required: true },
     defence: {
         type: Number,
         min: 0,

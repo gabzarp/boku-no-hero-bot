@@ -1,18 +1,20 @@
 const User = require('../models/user')
 const Quirk = require('../models/quirk')
 const {randomQuirk} = require('../controllers/QuirkController')
+const Discord = require('discord.js');
 
 const alignments = ['hero', 'villain']
 
 const userController = {
     quirkAwake: async (params)=>{
         try {
-            var user = await User.findOne({userId: params.message.author.id});
-
+            var user = await User.findOne({userId: params.message.author.id, serverId: params.message.guild.id});
+            console.log(params.message)
             if (!user) {
                 user = await User.create({
                     name: params.message.author.username,
-                    userId: params.message.author.id
+                    userId: params.message.author.id,
+                    serverId: params.message.guild.id
                 })
             }
 
@@ -67,7 +69,44 @@ const userController = {
         }
     },
     restAllUsers: async()=>{
+        const exampleEmbed = new Discord.MessageEmbed()
+        .setColor('#0099ff')
+        .setTitle(fortress.name)
+        .addFields(
+            levels
+        )
+    
+        message.channel.send(exampleEmbed);
         await User.updateMany({stamina: { $lt: 5} }, {$inc : {stamina : 1}})
+    },
+    heroes: async(params)=>{
+        var heroes = await User.find({serverId: params.message.channel.guild.id, alignment: 'hero'})
+        console.log(heroes)
+        var heroesEmbed = heroes.map((hero)=>{
+            return {name: '#Rank WIP', value: `**${hero.name}** - Agency WIP`}
+        })
+        const embed = new Discord.MessageEmbed()
+        .setColor('#0099ff')
+        .setTitle('Top heroes')
+        .addFields(
+            heroesEmbed
+        )
+       params.message.channel.send(embed);
+
+    },
+    villains: async(params)=>{
+        var heroes = await User.find({serverId: params.message.channel.guild.id, alignment: 'villain'})
+        var heroesEmbed = heroes.map((hero)=>{
+            return {name: '#Rank WIP', value: `**${hero.name}** - Agency WIP`}
+        })
+
+        const embed = new Discord.MessageEmbed()
+        .setColor('#0099ff')
+        .setTitle('Top villains')
+        .addFields(
+            heroesEmbed
+        )
+       params.message.channel.send(embed);
     },
     stamina: async(params)=>{
         var zapzapzapzapzapzap = '';
