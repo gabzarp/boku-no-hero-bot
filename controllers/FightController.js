@@ -15,6 +15,10 @@ module.exports = {
     duel: async (params)=>{
         var message = await params.message.channel.send(`<@!${params.user.userId}> is challenging ${params.args[1]}`)
         var enemy = await User.findOne({userId : params.args[1].replace("<@!", "").replace(">", "")})
+        if (!enemy) {
+            message.channel.send(`Challenger doesn't have a quirk.`);
+            return;
+        }
         await message.react('👍')
         await message.react('👎')
 
