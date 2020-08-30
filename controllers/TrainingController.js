@@ -14,7 +14,7 @@ module.exports = {
             return;
         }
         if (params.user.stamina <= 0) {
-            params.message.channel.send(`You do not have enought stamina!`) 
+            params.message.channel.send(`You do not have enough stamina!`) 
             return;
         } 
 
