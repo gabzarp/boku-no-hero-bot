@@ -69,14 +69,6 @@ const userController = {
         }
     },
     restAllUsers: async()=>{
-        const exampleEmbed = new Discord.MessageEmbed()
-        .setColor('#0099ff')
-        .setTitle(fortress.name)
-        .addFields(
-            levels
-        )
-    
-        message.channel.send(exampleEmbed);
         await User.updateMany({stamina: { $lt: 5} }, {$inc : {stamina : 1}})
     },
     heroes: async(params)=>{
