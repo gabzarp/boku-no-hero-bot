@@ -62,6 +62,10 @@ const userController = {
     },
     changeName: async(params)=>{
         try {
+            if(params.args.slice(1).join(" ").length > 30) {
+                params.message.channel.send("too long of a name shounen!")
+                return;
+            }
             params.user.name  = params.args.slice(1).join(" ");
             params.user.save()
         } catch (error) {
