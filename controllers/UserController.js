@@ -62,17 +62,15 @@ const userController = {
     },
     changeName: async(params)=>{
         try {
-            console.log(params.args.slice(1))
             if (typeof params.args[1] === 'undefined') {
                 params.message.channel.send("Invalid syntax. Correct: %name 'Your name'.");
                 return;
             }
-            if (params.args.slice(1).join(" ").length > 50) {
-                params.message.channel.send("Name exceeded character limit (50).");
-                return;
-            }
             if (typeof params.user.alignment === 'undefined' || !params.user.alignment) {
                 params.message.channel.send("Please select your alignment first.");
+            }
+            if(params.args.slice(1).join(" ").length > 30) {
+                params.message.channel.send("too long of a name shounen!")
                 return;
             }
             params.user.name  = params.args.slice(1).join(" ");
@@ -127,6 +125,26 @@ const userController = {
             return;
         }
         params.message.channel.send(`Your stamina: ${zapzapzapzapzapzap}`)
+    },
+    profile: async params => {
+        var user = await User.find({userId: params.message.author.id}).populate("quirk")
+        console.log(user[0])
+        const discEmbed = new Discord.MessageEmbed()
+            .setColor('#0099ff')
+            .setTitle(user[0].name)
+            .addFields(
+                { name: "**alignment**", value: user[0].alignment.toUpperCase() },
+                { name: '\u200B', value: '\u200B' },
+                { name: ("**agility**: " + user[0].agility), value: "\u200B" },
+                { name: ("**defence**: " + user[0].defence), value: "\u200B" },
+                { name: ("**attack**: " + user[0].attack), value: "\u200B" },
+                { name: ("**power**: " + user[0].power), value: "\u200B" },
+                { name: ("**defence power**: " + user[0].defence_power), value: "\u200B" },
+                { name: ("**precision**: " + user[0].precision), value: "\u200B" },
+                { name: ("**utility**: " + user[0].utility), value: "\u200B" }
+            )
+
+        params.message.channel.send("profileeee:"+  user[0])
     }
 }
 module.exports = userController

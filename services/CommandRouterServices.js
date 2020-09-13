@@ -1,6 +1,6 @@
 const { createQuirk, myQuirk } = require('../controllers/QuirkController.js')
 const User = require('../models/user.js')
-const { quirkAwake, chooseAlignment, changeName, stamina, heroes, villains } = require('../controllers/UserController.js')
+const { quirkAwake, chooseAlignment, changeName, stamina, heroes, villains, profile } = require('../controllers/UserController.js')
 const { train } = require('../controllers/TrainingController.js')
 const { duel } = require('../controllers/FightController.js')
 const { help } = require('../controllers/UtilController')
@@ -16,7 +16,8 @@ const routes = {
     'help': help,
     'stamina': stamina,
     'heroes': heroes,
-    'villains': villains
+    'villains': villains,
+    'profile': profile
 } 
 
 const router = {
