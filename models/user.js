@@ -1,7 +1,7 @@
 const mongoose = require("../database/mongodb");
 
 const User = new mongoose.Schema({
-    name: { type: String },
+    name: { type: String, unique: true },
     lastQuirk: { type: Date, default: Date.now },
     quirk: { type: mongoose.Schema.Types.ObjectId, ref: "Quirk" },
     alignment: { type: String, enum: ["hero", "villain"] },

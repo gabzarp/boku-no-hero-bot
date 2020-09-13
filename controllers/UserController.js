@@ -62,10 +62,27 @@ const userController = {
     },
     changeName: async(params)=>{
         try {
+            console.log(params.args.slice(1))
+            if (typeof params.args[1] === 'undefined') {
+                params.message.channel.send("Invalid syntax. Correct: %name 'Your name'.");
+                return;
+            }
+            if (params.args.slice(1).join(" ").length > 50) {
+                params.message.channel.send("Name exceeded character limit (50).");
+                return;
+            }
+            if (typeof params.user.alignment === 'undefined' || !params.user.alignment) {
+                params.message.channel.send("Please select your alignment first.");
+                return;
+            }
             params.user.name  = params.args.slice(1).join(" ");
-            params.user.save()
+            await params.user.save()
+            params.message.channel.send(`<@!${params.user.userId}> chose his ${params.user.alignment} name! Good luck ${params.user.name}!`);
+
         } catch (error) {
-            console.log(error.code)
+            if (error.code == 11000) {
+                params.message.channel.send("This name is already taken!");
+            }
         }
     },
     restAllUsers: async()=>{
